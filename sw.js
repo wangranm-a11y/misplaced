@@ -1,5 +1,5 @@
 /* 「我丢」 service worker —— 简单缓存，离线可用 */
-const CACHE = 'misplaced-v16';
+const CACHE = 'misplaced-v17';
 const ASSETS = [
   './',
   './index.html',
@@ -12,6 +12,7 @@ const ASSETS = [
   './ai.js',
   './findcard.js',
   './incense.js',
+  './healcard.js',
   './starmap.js',
   './manifest.json',
   './icons/icon-192.svg',

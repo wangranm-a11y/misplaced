@@ -325,23 +325,37 @@ window.COPY = {
 
   // —— About page ——
   about: {
-    title: "Why I made Misplaced",
-    body: `I'm someone who loses things constantly. Recently I lost a French textbook. Before that, a stuffed animal I really loved.
+    title: "How Misplaced began",
+    body: `I'm someone who loses things constantly. Since middle school, every time I lose something I can't peacefully do anything else — there's a string in my chest, always tense. Lately it's been intense again: I lost a French textbook, recently a stuffed animal I really loved, and right as I was writing this I realized I'd lost my student card too…
 
-The worst part of losing things, for me, was never the thing itself — it was the string in my head, always tense. Every time I sat down to do something, it'd jump up and yell: "you still haven't found it."
+Every time it happens, I scold myself. **"How can I be this careless?" "I could have just not lost it."**
 
-And every time, I'd start scolding myself. "How can I be this careless?" "I could have just not lost it." That kind of self-blame hurts more than the loss itself.
+And then I ruminate forever, the string in my head still tense, and I can't focus on anything else.
 
 One day I wondered: if I just *wrote down* what was hanging in my head, would my brain finally let it go?
 
-Turns out there's a name for this: the **Zeigarnik Effect**. Unfinished tasks keep occupying our cognitive resources. But the moment you "write them down," your brain decides "someone's handling it" — and you're free to think about something else.
+Turns out there's a name for this: the **Zeigarnik Effect**. Unfinished tasks keep occupying our cognitive resources. But the moment you "write them down", your brain decides "someone's handling it" — and you're free to think about something else.
 
 That's where Misplaced came from.
 
-It doesn't help you find anything. It doesn't pretend nothing happened. It just takes the thing hanging in your head — and says:
+It's a light healing tool for people who lose things — with a little translucent ghost cat called **Lossy** to keep you company from start to finish.
 
-"Logged. Go on."`,
-    sign: "— A person who's always misplacing things, 2026",
+The core action of Misplaced isn't *solve* — it's **handover**. You hand the thing hanging in your head over to Lossy, it carries the "unfinished" pain for you, and you go on with your day, free.
+
+There's another feature I really love: **the Lost Star Map**.
+
+Every thing you've lost becomes a star on the map. Someone asked me: doesn't keeping all the lost things make you feel worse over time? I thought about it seriously. And then a sentence convinced me —
+
+> The past never truly leaves us. It hovers, it lingers, it casts long, undismissible shadows from yesterday into now and beyond.
+
+The things you've experienced, the things you've lost — they all shape who you are.
+
+—
+
+Thank you for reading this far! This is just my first little project. If you have suggestions, please share — **I really do listen**.
+
+For more conversation / suggestions: **M1579188242** — welcome 💗 thanks for the support.`,
+    sign: "— A person who keeps misplacing things, 2026.5",
   },
 
   // —— Helpers ——
