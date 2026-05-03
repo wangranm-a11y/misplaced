@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1" />
+  <meta name="theme-color" content="#0a0820" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Misplaced" />
+  <title>Misplaced · Park what's hanging in your head</title>
+
+  <!-- ============ SEO ============ -->
+  <meta name="description" content="A light, healing tool for people who misplace things. A cute ghost cat named Lossy will walk with you from start to finish. Park what's hanging in your head and take a breath." />
+  <meta name="keywords" content="misplaced,lossy,lost and found,zeigarnik effect,healing,pwa,journaling,lost item poster,emotional first aid,goodbye ritual,digital incense" />
+  <meta name="author" content="wangranm-a11y" />
+  <link rel="canonical" href="https://wangranm-a11y.github.io/misplaced/" />
+
+  <!-- ============ Open Graph (WeChat / Slack / Discord) ============ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Misplaced" />
+  <meta property="og:title" content="Misplaced · Park what's hanging in your head" />
+  <meta property="og:description" content="People who misplace things deserve their own star map. A cute ghost cat named Lossy walks with you the whole way." />
+  <meta property="og:url" content="https://wangranm-a11y.github.io/misplaced/" />
+  <meta property="og:image" content="https://wangranm-a11y.github.io/misplaced/assets/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Misplaced — Park what's hanging in your head" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ============ Twitter Card ============ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Misplaced · Park what's hanging in your head" />
+  <meta name="twitter:description" content="People who misplace things deserve their own star map." />
+  <meta name="twitter:image" content="https://wangranm-a11y.github.io/misplaced/assets/og-image.svg" />
+
+  <!-- ============ Schema.org JSON-LD ============ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Misplaced",
+    "alternateName": "misplaced",
+    "description": "A light, healing tool for people who misplace things. Park what's hanging in your head and take a breath.",
+    "url": "https://wangranm-a11y.github.io/misplaced/",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "Any (PWA)",
+    "inLanguage": "en",
+    "image": "https://wangranm-a11y.github.io/misplaced/assets/og-image.svg",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "creator": { "@type": "Person", "name": "wangranm-a11y" }
+  }
+  </script>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon-192.svg" />
+  <link rel="preconnect" href="https://image.pollinations.ai">
+  <link rel="preconnect" href="https://text.pollinations.ai">
+  <link rel="stylesheet" href="styles.css?v=20260503n" />
+</head>
+<body>
+
+  <!-- ============ Top brand bar ============ -->
+  <header class="top">
+    <div class="brand-line">
+      <span class="brand-mark"></span>
+      <span class="brand-name">Misplaced</span>
+      <span class="brand-tag">v7</span>
+      <span class="brand-spacer"></span>
+      <span class="brand-clock" id="topClock">--:--</span>
+    </div>
+  </header>
+
+  <!-- ============ Main ============ -->
+  <main id="main">
+
+    <!-- ━━━━━━━━━━━━━━ LOST TAB ━━━━━━━━━━━━━━ -->
+    <section class="page active" id="page-lost">
+
+      <!-- ✦ Hero: Lossy as main visual + 2 entry buttons -->
+      <div class="view active" id="lost-hero">
+        <div class="hero-stage">
+          <div class="hero-stars" aria-hidden="true"></div>
+          <div class="diu-hero" id="diuHero"></div>
+          <div class="hero-bubble" id="heroBubble" hidden></div>
+        </div>
+
+        <div class="hero-actions" id="heroActions" hidden>
+          <button class="btn-hero btn-hero-primary" id="enterLost">
+            <span class="btn-hero-emoji">·</span>
+            <span class="btn-hero-text">
+              <span class="btn-hero-title">What slipped away today?</span>
+              <span class="btn-hero-sub">Hand it over to me</span>
+            </span>
+          </button>
+          <button class="btn-hero btn-hero-ghost" id="enterNote">
+            <span class="btn-hero-emoji">·</span>
+            <span class="btn-hero-text">
+              <span class="btn-hero-title">Just remind me later</span>
+              <span class="btn-hero-sub">Not lost yet — but easy to forget</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 0: input -->
+      <div class="view" id="lost-step0">
+        <div class="step-back">
+          <button class="back-btn" data-back="lost-hero">← back</button>
+        </div>
+        <div class="hero-row compact">
+          <div class="hero-text">
+            <h1 class="hero-title">What slipped<br>away today?</h1>
+          </div>
+          <div class="diu-anchor" id="diu0"></div>
+        </div>
+        <div class="input-card">
+          <textarea
+            id="lostInput"
+            class="lost-input"
+            placeholder=""
+            maxlength="80"
+            rows="2"></textarea>
+          <button class="btn-voice" id="btnVoice" aria-label="Voice input">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="2" width="4" height="8" rx="2"/>
+              <path d="M3 7v1a5 5 0 0 0 10 0V7"/>
+              <line x1="8" y1="13" x2="8" y2="15"/>
+            </svg>
+          </button>
+        </div>
+        <button class="btn-primary" id="lostNext0" disabled>Log it</button>
+      </div>
+
+      <!-- Step 1: weight -->
+      <div class="view" id="lost-step1">
+        <div class="hero-text">
+          <h1 class="hero-title">For you,<br>this thing is…</h1>
+          <p class="hero-sub" id="step1Sub">No right answer — just a feeling.</p>
+        </div>
+        <div class="weight-list" id="weightList">
+          <button type="button" class="weight-card" data-weight="1">
+            <span class="weight-emoji">💚</span>
+            <span class="weight-text">
+              <span class="weight-title">No big deal, just noting</span>
+              <span class="weight-desc">Worth a note, won't ruin my day</span>
+            </span>
+            <span class="weight-arrow" aria-hidden="true">›</span>
+          </button>
+          <button type="button" class="weight-card" data-weight="2">
+            <span class="weight-emoji">🧡</span>
+            <span class="weight-text">
+              <span class="weight-title">Oof… it kinda hurts</span>
+              <span class="weight-desc">A small ache, I'll think about it</span>
+            </span>
+            <span class="weight-arrow" aria-hidden="true">›</span>
+          </button>
+          <button type="button" class="weight-card" data-weight="3">
+            <span class="weight-emoji">❤️</span>
+            <span class="weight-text">
+              <span class="weight-title">Please, please come back</span>
+              <span class="weight-desc">Can't breeze past this one</span>
+            </span>
+            <span class="weight-arrow" aria-hidden="true">›</span>
+          </button>
+        </div>
+        <div class="step-actions">
+          <button class="btn-ghost" data-back="lost-step0">← edit</button>
+          <button class="btn-primary" id="lostNext1" disabled>Next</button>
+        </div>
+      </div>
+
+      <!-- Step 2: still want to find? -->
+      <div class="view" id="lost-step2">
+        <div class="hero-text">
+          <h1 class="hero-title">Still want to look?</h1>
+          <p class="hero-sub">Not looking is also a good answer. It may want to wander now.</p>
+        </div>
+        <div class="choice-row">
+          <button class="choice-card" data-intent="search">
+            <span class="choice-emoji">👀</span>
+            <span class="choice-title">Try to find it</span>
+            <span class="choice-sub">Make a poster / set a reminder</span>
+          </button>
+          <button class="choice-card" data-intent="release">
+            <span class="choice-emoji">🕊️</span>
+            <span class="choice-title">Let it be</span>
+            <span class="choice-sub">Let it go to its fate</span>
+          </button>
+        </div>
+        <div class="step-actions">
+          <button class="btn-ghost" data-back="lost-step1">← edit</button>
+        </div>
+      </div>
+
+      <!-- Path A: light loss release -->
+      <div class="view" id="path-light-release">
+        <div class="result-card">
+          <div class="diu-anchor center" id="diuRelease"></div>
+          <div class="release-line" id="releaseLineLight"></div>
+          <div class="hashtag">— HANDED OVER —</div>
+        </div>
+        <button class="btn-primary" id="lightDone">Good. Turn the page</button>
+      </div>
+
+      <!-- Path B-fork: do you remember where? -->
+      <div class="view" id="path-search-fork">
+        <div class="hero-text">
+          <h1 class="hero-title">Do you know<br>roughly where it is?</h1>
+          <p class="hero-sub">Tell me what you know. More clues, better chances.</p>
+        </div>
+        <div class="choice-row stacked">
+          <button class="choice-card wide" data-fork="known">
+            <span class="choice-emoji">📍</span>
+            <span class="choice-title">I remember roughly where</span>
+            <span class="choice-sub">→ Generate a Lost Poster</span>
+          </button>
+          <button class="choice-card wide" data-fork="unknown">
+            <span class="choice-emoji">🤷</span>
+            <span class="choice-title">Not really, just want to log it</span>
+            <span class="choice-sub">→ Just set a reminder</span>
+          </button>
+        </div>
+        <div class="step-actions">
+          <button class="btn-ghost" data-back="lost-step2">← edit</button>
+        </div>
+      </div>
+
+      <!-- Path B: Lost Poster (location known) -->
+      <div class="view" id="path-search">
+        <div class="search-phase active" id="searchPhaseForm">
+          <div class="hero-text">
+            <h2 class="view-title">Lost Item Details</h2>
+            <p class="view-sub">Write a couple of clues. I'll draw a Lost Poster for you.</p>
+          </div>
+
+          <!-- Optional: upload photo (placed prominently at top of form) -->
+          <div class="photo-upload-block">
+            <label class="photo-upload" id="photoUpload">
+              <input type="file" id="inPhoto" accept="image/*" hidden />
+              <div class="photo-upload-empty" id="photoUploadEmpty">
+                <span class="photo-upload-icon">＋</span>
+                <span class="photo-upload-title">Add a photo</span>
+                <span class="photo-upload-sub">Photos help — optional</span>
+              </div>
+              <div class="photo-upload-preview" id="photoUploadPreview" hidden>
+                <img id="photoPreviewImg" alt="preview" />
+                <button type="button" class="photo-remove" id="photoRemove" aria-label="Remove">×</button>
+              </div>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label>What did you misplace
+              <input id="inName" type="text" readonly />
+            </label>
+            <label>When
+              <select id="inWhen">
+                <option value="just">Just now</option>
+                <option value="today" selected>Today</option>
+                <option value="recent">Past few days</option>
+                <option value="unknown">Can't say</option>
+              </select>
+            </label>
+            <label>Last seen at
+              <input id="inPlace" type="text" placeholder="Library 3rd floor / under desk in room 7…" />
+            </label>
+            <label>Describe it (color, features)
+              <input id="inDesc" type="text" placeholder="Blue cover, sticky notes inside" />
+            </label>
+            <label>Contact (optional)
+              <input id="inContact" type="text" placeholder="Email / phone / leave blank" />
+            </label>
+          </div>
+
+          <div class="step-actions">
+            <button class="btn-ghost" data-back="path-search-fork">← edit</button>
+            <button class="btn-primary" id="genFindCard">Make Lost Poster</button>
+          </div>
+        </div>
+
+        <div class="search-phase" id="searchPhaseCard" hidden>
+          <div class="hero-text">
+            <h2 class="view-title">Lost Poster</h2>
+            <p class="view-sub">All done. Save it, or share with anyone who might spot it.</p>
+          </div>
+
+          <div class="canvas-wrap">
+            <canvas id="findCanvas" width="720" height="1080" aria-label="Lost Poster"></canvas>
+          </div>
+
+          <div class="share-row">
+            <button class="btn-ghost half" id="cardSave">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 9v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9"/>
+                <polyline points="4 6 7 9 10 6"/>
+                <line x1="7" y1="9" x2="7" y2="2"/>
+              </svg>
+              Save
+            </button>
+            <button class="btn-primary half" id="cardShare">Share</button>
+          </div>
+
+          <div class="step-actions">
+            <button class="btn-ghost" id="cardEdit">← edit info</button>
+            <button class="btn-ghost" id="searchToRelease">Let it go</button>
+            <button class="btn-primary" id="searchSave">Save to Still Out There</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Path B-unknown: minimal — just a reminder -->
+      <div class="view" id="path-search-light">
+        <div class="hero-text">
+          <h2 class="view-title">Park it in "Still Out There"<br>and wait</h2>
+          <p class="view-sub">No fields to fill. I'll keep watch.<br>Come back when something jogs your memory.</p>
+        </div>
+        <div class="form-grid">
+          <label>Set a reminder?
+            <select id="inReminder">
+              <option value="">No reminder</option>
+              <option value="1h">In 1 hour</option>
+              <option value="evening" selected>Later today</option>
+              <option value="tomorrow">Tomorrow</option>
+              <option value="custom">Custom time…</option>
+            </select>
+          </label>
+          <label id="customReminderRow" hidden>Pick a time
+            <input id="inReminderCustom" type="datetime-local" />
+          </label>
+        </div>
+        <div class="step-actions">
+          <button class="btn-ghost" data-back="path-search-fork">← edit</button>
+          <button class="btn-primary" id="searchLightSave">Park in Still Out There</button>
+        </div>
+      </div>
+
+      <!-- Path C: heavy bridge -->
+      <div class="view" id="path-heavy-bridge">
+        <div class="result-card soft">
+          <div class="diu-anchor center" id="diuHeavy"></div>
+          <div class="release-line" id="bridgeLine"></div>
+        </div>
+        <div class="step-actions stack">
+          <button class="btn-primary" id="heavyEnter">Walk a stretch with it</button>
+          <button class="btn-ghost" id="heavySkip">Just log it, deal with it later</button>
+        </div>
+      </div>
+
+      <!-- Path D: healing flow -->
+      <div class="view" id="heal-flow">
+        <div class="heal-progress">
+          <span class="dot" data-step="1"></span>
+          <span class="dot" data-step="2"></span>
+          <span class="dot" data-step="3"></span>
+          <span class="dot" data-step="4"></span>
+          <span class="dot" data-step="5"></span>
+        </div>
+
+        <!-- 1 upload photo -->
+        <div class="heal-step active" data-step="1">
+          <h2 class="heal-title">Do you have a photo of it?</h2>
+          <p class="heal-sub">Not having one is fine. Memory is enough.</p>
+          <label class="upload-box">
+            <span id="uploadHint">Tap here to upload a photo (optional)</span>
+            <img id="uploadPreview" hidden alt="" />
+            <input type="file" id="healPhoto" accept="image/*" hidden />
+          </label>
+          <div class="step-actions">
+            <button class="btn-ghost heal-skip">Skip</button>
+            <button class="btn-primary heal-next">Next</button>
+          </div>
+        </div>
+
+        <!-- 2 shadow -->
+        <div class="heal-step" data-step="2">
+          <h2 class="heal-title">This is the shadow it left</h2>
+          <p class="heal-sub">Sit with it for a moment.</p>
+          <div class="shadow-card">
+            <div class="shadow-poem" id="shadowPoem"></div>
+          </div>
+          <div class="step-actions">
+            <button class="btn-ghost heal-skip">Skip</button>
+            <button class="btn-primary heal-next">Next</button>
+          </div>
+        </div>
+
+        <!-- 3 letter -->
+        <div class="heal-step" data-step="3">
+          <h2 class="heal-title">Want to tell it something?</h2>
+          <p class="heal-sub" id="letterHook">If it could hear you…</p>
+          <textarea id="letterText" class="letter-text" placeholder="Write it. It'll receive it."></textarea>
+          <div class="step-actions">
+            <button class="btn-ghost heal-skip">Skip</button>
+            <button class="btn-primary heal-next">Next</button>
+          </div>
+        </div>
+
+        <!-- 4 next chapter -->
+        <div class="heal-step" data-step="4">
+          <h2 class="heal-title">Its next chapter</h2>
+          <p class="heal-sub">Where will it go after leaving you? Pick a few words and I'll write its drift-tale.</p>
+
+          <div class="kw-input-wrap">
+            <input id="kwInput" class="kw-input" placeholder="Type your own keyword" maxlength="14" />
+            <button class="btn-ghost small" id="kwAdd">Add</button>
+          </div>
+          <div class="kw-chips" id="kwChips"></div>
+
+          <div class="kw-suggest">
+            <div class="kw-suggest-title">Stuck? Tap a few</div>
+            <div class="kw-suggest-list" id="kwSuggest"></div>
+          </div>
+
+          <button class="btn-primary" id="storyGen" disabled>Spin a tale</button>
+
+          <div class="story-loading" id="storyLoading" hidden>
+            <div class="loading-dots"><span></span><span></span><span></span></div>
+            <div>Lossy is spinning a tale…</div>
+          </div>
+
+          <div class="story-result" id="storyResult" hidden>
+            <div class="story-illustration">
+              <img id="storyImg" alt="" />
+              <div class="story-img-overlay" id="storyImgFallback" hidden>Illustration generating…</div>
+            </div>
+            <div class="story-text" id="storyText"></div>
+            <label class="story-tail">
+              One thing you'd like to tell it
+              <input id="storyTail" type="text" placeholder="One sentence is enough" maxlength="60" />
+            </label>
+            <button class="btn-ghost small" id="storyRegen">Try a different tale</button>
+          </div>
+
+          <div class="step-actions">
+            <button class="btn-ghost heal-skip">Skip</button>
+            <button class="btn-primary heal-next">Next</button>
+          </div>
+        </div>
+
+        <!-- 5 sealing -->
+        <div class="heal-step" data-step="5">
+          <h2 class="heal-title center">Sealing</h2>
+          <p class="heal-sub center">It's settling in.</p>
+          <div class="seal-anim">
+            <div class="seal-particles"></div>
+            <div class="diu-anchor center" id="diuSeal"></div>
+          </div>
+          <div class="release-line center" id="sealLine"></div>
+          <div class="hero-sub center" id="noBlame"></div>
+          <div class="step-actions stack">
+            <button class="btn-primary" id="sealDone">Send to Star Map</button>
+            <button class="btn-ghost" id="sealIncense">🕯 Light a stick for it</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━ STILL OUT THERE TAB ━━━━━━━━━━━━━━ -->
+    <section class="page" id="page-stillhere">
+      <div class="page-head">
+        <h1 class="page-title">Still Out There</h1>
+        <p class="page-sub">Things still pending. They're all here with me.</p>
+      </div>
+
+      <!-- Top filter chips -->
+      <div class="filter-row">
+        <button class="chip active" data-stillhere-filter="all">All</button>
+        <button class="chip" data-stillhere-filter="note">🗒 Reminder</button>
+        <button class="chip" data-stillhere-filter="searching">🔍 Searching</button>
+      </div>
+
+      <!-- Quick log card -->
+      <div class="note-input">
+        <textarea id="noteInput" placeholder="e.g. French book is on the dorm windowsill / umbrella is on the entry hook" rows="2"></textarea>
+        <div class="note-remind">
+          <span>Remind me?</span>
+          <select id="noteWhen">
+            <option value="">No reminder</option>
+            <option value="2h">In 2 hours</option>
+            <option value="tonight">Tonight</option>
+            <option value="tomorrow">Tomorrow morning</option>
+          </select>
+          <button class="btn-primary small" id="noteAdd">Remind me</button>
+        </div>
+      </div>
+
+      <div class="stillhere-list" id="stillhereList"></div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━ STAR MAP TAB ━━━━━━━━━━━━━━ -->
+    <section class="page" id="page-museum">
+      <div class="page-head">
+        <h1 class="page-title">Star Map</h1>
+        <p class="page-sub" id="museumQuote">All these were yours once. They're all okay.</p>
+      </div>
+
+      <!-- View toggle (sky / timeline) -->
+      <div class="view-switch">
+        <button class="view-btn active" data-view="starfield">✦ Sky</button>
+        <button class="view-btn" data-view="timeline">≡ Timeline</button>
+      </div>
+
+      <!-- Status filter -->
+      <div class="filter-row">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="found">Found</button>
+        <button class="chip" data-filter="released">Released</button>
+        <button class="chip" data-filter="healed">Sealed</button>
+        <button class="chip" data-filter="incensed">Incensed</button>
+      </div>
+
+      <!-- Sky view -->
+      <div class="starmap-frame" id="starmapFrame">
+        <div class="starmap-bg"></div>
+        <div class="diu-floater" id="diuStarmap"></div>
+      </div>
+
+      <!-- Timeline view -->
+      <div class="timeline-frame" id="timelineFrame" hidden>
+        <div class="timeline-list" id="timelineList"></div>
+      </div>
+
+      <div class="data-empathy" id="dataEmpathy" hidden></div>
+    </section>
+
+    <!-- ━━━━━━━━━━━━━━ YOU TAB ━━━━━━━━━━━━━━ -->
+    <section class="page" id="page-me">
+      <div class="page-head">
+        <h1 class="page-title">You</h1>
+        <p class="page-sub">Your little corner.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-num" id="statTotal">0</span>
+          <span class="stat-label">on file</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="statFound">0%</span>
+          <span class="stat-label">found rate</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="statTop">—</span>
+          <span class="stat-label">repeat</span>
+        </div>
+      </div>
+
+      <div class="me-card">
+        <div class="me-card-title">This month</div>
+        <div class="me-card-body" id="blameIndex">No data yet. Come back in a few days.</div>
+      </div>
+
+      <div class="me-card">
+        <div class="me-card-title">Notifications</div>
+        <div class="me-row">
+          <span>Enable browser notifications</span>
+          <button class="btn-ghost small" id="permBtn">Request</button>
+        </div>
+        <div class="me-row">
+          <span>Send test</span>
+          <button class="btn-ghost small" id="testNotify">Try it</button>
+        </div>
+      </div>
+
+      <div class="me-card">
+        <div class="me-card-title">Sound &amp; Haptics</div>
+
+        <div class="me-row">
+          <span>Background music</span>
+          <button class="toggle on" id="toggleMusic" data-on="true"><span class="toggle-knob"></span></button>
+        </div>
+
+        <!-- Music theme picker -->
+        <div class="music-themes" id="musicThemes">
+          <button class="theme-btn active" data-theme="warm">
+            <span class="theme-emoji">☀</span>
+            <span class="theme-name">Warm</span>
+            <span class="theme-desc">F-major sun</span>
+          </button>
+          <button class="theme-btn" data-theme="moon">
+            <span class="theme-emoji">☾</span>
+            <span class="theme-name">Moonlight</span>
+            <span class="theme-desc">D-dorian night</span>
+          </button>
+          <button class="theme-btn" data-theme="sea">
+            <span class="theme-emoji">≋</span>
+            <span class="theme-name">Sea breeze</span>
+            <span class="theme-desc">A-pentatonic + waves</span>
+          </button>
+        </div>
+
+        <!-- Volume slider -->
+        <div class="me-row music-volume-row">
+          <span class="vol-label">Volume <span class="vol-num" id="volNum">60</span></span>
+          <input type="range" min="0" max="100" value="60" id="musicVolume" class="vol-slider" />
+        </div>
+
+        <div class="me-row">
+          <span>Sound effects</span>
+          <button class="toggle on" id="toggleSound" data-on="true"><span class="toggle-knob"></span></button>
+        </div>
+        <div class="me-row">
+          <span>Haptics</span>
+          <button class="toggle on" id="toggleHaptic" data-on="true"><span class="toggle-knob"></span></button>
+        </div>
+        <div class="me-row">
+          <span>Try the bowl chime</span>
+          <button class="btn-ghost small" id="trySound">Ding—</button>
+        </div>
+      </div>
+
+      <div class="me-card">
+        <div class="me-card-title">Data</div>
+        <div class="me-row">
+          <span>Export JSON</span>
+          <button class="btn-ghost small" id="exportBtn">Download</button>
+        </div>
+        <div class="me-row danger">
+          <span>Wipe everything</span>
+          <button class="btn-ghost small danger" id="wipeBtn">Wipe</button>
+        </div>
+      </div>
+
+      <button type="button" class="about-link" id="aboutLink">
+        <span>About Misplaced · How it began</span>
+      </button>
+
+      <div class="me-foot">Here when you need it<br><span class="me-version">v7 · Soft Night · Reborn</span></div>
+    </section>
+  </main>
+
+  <!-- ============ Bottom 4-tab nav ============ -->
+  <nav class="tabbar">
+    <button class="tab active" data-tab="lost">
+      <span class="tab-icon">✦</span>
+      <span class="tab-label">Lost</span>
+    </button>
+    <button class="tab" data-tab="stillhere">
+      <span class="tab-icon">◐</span>
+      <span class="tab-label">Still</span>
+    </button>
+    <button class="tab" data-tab="museum">
+      <span class="tab-icon">✧</span>
+      <span class="tab-label">Map</span>
+    </button>
+    <button class="tab" data-tab="me">
+      <span class="tab-icon">◯</span>
+      <span class="tab-label">You</span>
+    </button>
+  </nav>
+
+  <!-- ============ Toast / Modal ============ -->
+  <div class="toast" id="toast"></div>
+  <div class="modal" id="modal" hidden>
+    <div class="modal-mask" data-close></div>
+    <div class="modal-card" id="modalCard"></div>
+  </div>
+
+  <!-- ============ About Misplaced (overlay) ============ -->
+  <div class="about-overlay" id="aboutOverlay">
+    <button class="about-close" id="aboutClose" aria-label="Close">×</button>
+    <div class="about-content" id="aboutContent"></div>
+    <div class="about-diu" id="aboutDiu"></div>
+  </div>
+
+  <!-- ============ Cyber Incense (overlay) ============ -->
+  <div class="incense-overlay" id="incenseOverlay" hidden>
+    <div class="incense-mask"></div>
+    <button class="incense-close" id="incenseClose" aria-label="Close">×</button>
+    <div class="incense-stage">
+
+      <div class="incense-step" data-incense-step="pick">
+        <div class="incense-head">
+          <div class="diu-anchor center" id="diuIncense1"></div>
+          <h2 class="incense-title">Light incense for <span id="incenseItem">it</span></h2>
+          <p class="incense-sub" id="incensePromptLine"></p>
+        </div>
+        <div class="stick-row">
+          <button class="stick-card" data-sticks="1">
+            <span class="stick-emoji">|</span>
+            <span class="stick-num">1 stick</span>
+            <span class="stick-label">heart sent</span>
+          </button>
+          <button class="stick-card" data-sticks="3">
+            <span class="stick-emoji">|||</span>
+            <span class="stick-num">3 sticks</span>
+            <span class="stick-label">three bows</span>
+          </button>
+          <button class="stick-card" data-sticks="5">
+            <span class="stick-emoji">|||||</span>
+            <span class="stick-num">5 sticks</span>
+            <span class="stick-label">full ritual</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="incense-step" data-incense-step="light" hidden>
+        <div class="altar">
+          <div class="sticks" id="sticksRow"></div>
+          <div class="altar-bowl"></div>
+          <div class="altar-base">— BURNER —</div>
+        </div>
+        <p class="incense-sub center" id="lightHint">Hold 3s · light the stick</p>
+        <button class="light-btn" id="lightBtn">
+          <span class="light-btn-ring"></span>
+          <span class="light-btn-fire">🔥</span>
+          <span class="light-btn-text">HOLD</span>
+        </button>
+      </div>
+
+      <div class="incense-step" data-incense-step="bless" hidden>
+        <div class="altar">
+          <div class="smoke-row" id="smokeRow"></div>
+          <div class="sticks" id="sticksRowLit"></div>
+          <div class="altar-bowl"></div>
+          <div class="altar-base">— BURNER —</div>
+        </div>
+        <div class="bless-text" id="blessText"></div>
+        <div class="bless-meta" id="blessMeta"></div>
+        <button class="btn-primary" id="blessDone">Done</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="copy.js?v=20260503n"></script>
+  <script src="mascot.js?v=20260503n"></script>
+  <script src="icons.js?v=20260503n"></script>
+  <script src="sounds.js?v=20260503n"></script>
+  <script src="ai.js?v=20260503n"></script>
+  <script src="findcard.js?v=20260503n"></script>
+  <script src="incense.js?v=20260503n"></script>
+  <script src="starmap.js?v=20260503n"></script>
+  <script src="app.js?v=20260503n"></script>
+
+  <script>
+    // PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(()=>{});
+      });
+    }
+  </script>
+</body>
+</html>
